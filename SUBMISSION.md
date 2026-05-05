@@ -1,4 +1,4 @@
-## Student Information
+## Information
 
 | Field | Value |
 |---|---|
@@ -7,14 +7,6 @@
 | GitHub Repository URL | https://github.com/MIbrahim-17/CS487-PA4 |
 | Resource Group | `rg-sp26-27100085` |
 | Assigned Region | `ukwest` (UK West) |
-
-## Evidence Rules
-
-- Use relative image paths, for example: `![AKS nodes](docs/aks-nodes.png)`.
-- Every image must have a 1-3 sentence description below it.
-- Azure Portal screenshots must show the resource name and enough page context to identify the service.
-- CLI screenshots must show the command and output.
-- Mask secrets such as function keys, ACR passwords, and storage connection strings.
 
 
 ## Task 1: App Service Web App (15 points)
