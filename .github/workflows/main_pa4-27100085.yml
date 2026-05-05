@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Zip webapp folder
-        run: zip -r release.zip ./webapp
+        run: cd webapp && zip -r ../release.zip . && cd ..
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
