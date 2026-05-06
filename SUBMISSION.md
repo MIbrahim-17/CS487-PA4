@@ -9,7 +9,7 @@
 | Assigned Region | `ukwest` (UK West) |
 
 
-## Task 1: App Service Web App (15 points)
+## Task 1: App Service Web App
 
 ### Task 1 — Forked GitHub Repository
 
@@ -39,7 +39,7 @@ The App Service application settings showed `FUNCTION_START_URL` and `FUNCTION_S
 
 ---
 
-## Task 2 — Azure Container Registry (15 pts)
+## Task 2 — Azure Container Registry
 
 The `pa427100085` Azure Container Registry was created in `rg-sp26-27100085` (UK West, Standard SKU) to host the three pipeline images. All three images — `validate-api`, `report-job`, and `func-app` — were built locally from their respective directories and pushed to `pa427100085.azurecr.io` with the `v1` tag. A local smoke test against `validate-api` confirmed the image logic was correct before the push.
 
@@ -77,7 +77,7 @@ The `az acr repository list` output listed `validate-api`, `report-job`, and `fu
 
 ---
 
-## Task 3 — Durable Orchestrator Implementation (12 pts)
+## Task 3 — Durable Orchestrator Implementation
 
 The `function_app.py` was completed with four handlers: `http_starter` (receives the order JSON and starts a new Durable instance), `validate_activity` (POSTs the order to the AKS `VALIDATE_URL` and returns the JSON response dict), `report_activity` (creates a per-order ACI container group via `ContainerInstanceManagementClient`, polls every 5 seconds until Succeeded or Failed, deletes the group, and returns the blob URL), and `my_orchestrator` (calls `validate_activity` first, returns `{"status": "rejected"}` immediately if `valid` is false, otherwise calls `report_activity` and returns `{"status": "completed", "report_url": ...}`).
 
@@ -107,7 +107,7 @@ orchestration run.
 
 ---
 
-## Task 4 — Function App Container Deployment (8 pts)
+## Task 4 — Function App Container Deployment
 
 The `func-app` image was rebuilt after Task 3 code completion and pushed to ACR. A Linux Function App `pa4--27100085` was created on the existing B1 App Service plan in UK West, configured to pull `pa427100085.azurecr.io/func-app:v1`. The pre-provisioned user-assigned managed identity `mi-pa4-27100085` was attached to satisfy the subscription's security policy blocking static `AzureWebJobsStorage` connection strings. A smoke test confirmed the HTTP starter endpoint was reachable and the Durable runtime created a new orchestration instance.
 
@@ -137,7 +137,7 @@ The `statusQueryGetUri` response showed the orchestration in a Failed state beca
 
 ---
 
-## Task 5 — AKS Validator Microservice (15 pts)
+## Task 5 — AKS Validator Microservice
 
 A single-node Standard_B2s AKS cluster `pa4-27100085` was created in UK West. An ACR image pull secret was created and referenced in the deployment manifest so the cluster could pull `validate-api:v1` from `pa427100085.azurecr.io`. The `validate-api` Deployment and LoadBalancer Service were applied via the manifests in `validate-api/k8s/`. Once the external IP was assigned, `VALIDATE_URL` was added to the Function App's application settings.
 
@@ -171,7 +171,7 @@ The `pa4--27100085` application settings showed `VALIDATE_URL` set to the AKS Lo
 
 ---
 
-## Task 6 — ACI Report Job (15 pts)
+## Task 6 — ACI Report Job
 
 A `reports` blob container was created in storage account `pa427100085`. A manual `az container create` test using the `report-job:v1` image confirmed the container parsed `ORDER_JSON`, generated a PDF, and wrote it to the `reports` container before exiting with Succeeded. The `mi-pa4-27100085` managed identity (Contributor on `rg-sp26-27100085`) was verified as attached to the Function App, and all `REPORT_*`, `ACR_*`, `STORAGE_ACCOUNT_URL`, and `AZURE_CLIENT_ID` application settings were configured so `report_activity` can provision and authenticate per-order ACI container groups.
 
@@ -205,7 +205,7 @@ The second settings page showed `STORAGE_ACCOUNT_URL` pointing to `pa427100085`,
 
 ---
 
-## Task 7 — End-to-End Pipeline Test (15 pts)
+## Task 7 — End-to-End Pipeline Test
 
 ### Web App Wiring
 
@@ -285,11 +285,11 @@ The `rg-sp26-27100085` resource group overview showed the complete TaskFlow infr
 
 ---
 
-## Task 8 — Documentation and Architecture Diagram (5 pts)
+## Task 8 — Documentation and Architecture Diagram
 
 ### Architecture Diagram
 
-> Architecture diagram to be added at docs/architecture.png
+![Architecture Diagram](docs/architecture.png)
 
 ### Service Selection
 
